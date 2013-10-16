@@ -10,3 +10,7 @@ the current stardate and seconds past the "star day".
 
 The "Earth time" output also respects the user setting indicating either 12hr or 24hr
 display.
+
+The stardate is calculated according to David Trimboli's forumla, found here:
+
+> http://www.trimboli.name/stardate.html

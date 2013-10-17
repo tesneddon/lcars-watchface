@@ -61,6 +61,7 @@
 
     void pbl_main(void *params);
     void handle_init(AppContextRef ctx);
+    void handle_deinit(AppContextRef ctx);
 
 /*
 ** Pebble App Identification
@@ -83,11 +84,13 @@ PBL_APP_INFO(MY_UUID,
 
     HeapBitmap lcars;
     BitmapLayer lcars_layer;
+    TextLayer dt_title_layer, sd_title_layer;
     Window window;
 
 void pbl_main(void *params) {
     PebbleAppHandlers handlers = {
-    	.init_handler = &handle_init
+    	.init_handler = &handle_init,
+	.deinit_handler = &handle_deinit
     };
     app_event_loop(params, &handlers);
 }
@@ -95,16 +98,39 @@ void pbl_main(void *params) {
 
 void handle_init(AppContextRef ctx) {
 
+    static char sd_title[] = "STARDATE";
+
     window_init(&window, "LCARS Watchface");
     window_stack_push(&window, true /* Animated */);
     window_set_background_color(&window, GColorBlack);
 
     resource_init_current_app(&APP_RESOURCES);
 
+    /*
+    ** Load an set the LCARS background.
+    */
     heap_bitmap_init(&lcars, RESOURCE_ID_LCARS);
     bitmap_layer_init(&lcars_layer, GRect(0, 0, 144, 168));
     bitmap_layer_set_bitmap(&lcars_layer, &lcars.bmp);
     layer_add_child(&window.layer, &lcars_layer.layer);
+
+    /*
+    ** Set the titles...
+    */
+    text_layer_init(&sd_title_layer, GRect(76, 0, 52, 14));
+    text_layer_set_background_color(&sd_title_layer, GColorBlack);
+    text_layer_set_font(&sd_title_layer,
+			fonts_get_system_font(FONT_KEY_GOTHIC_14));
+    text_layer_set_text(&sd_title_layer, sd_title);
+    text_layer_set_text_color(&sd_title_layer, GColorWhite);
+    text_layer_set_text_alignment(&sd_title_layer, GTextAlignmentCenter);
+    layer_add_child(&window.layer, &sd_title_layer.layer);
 }
 
 
+void handle_deinit(AppContextRef ctx) {
+    /*
+    ** Tidy up the LCARS background.
+    */
+    heap_bitmap_deinit(&lcars);
+}

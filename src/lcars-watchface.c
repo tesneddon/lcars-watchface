@@ -72,7 +72,7 @@
 		  0x1F, 0x80, 0xFC, 0xCE }
 
 PBL_APP_INFO(MY_UUID,
-             "Stardate Watchface", "Tim Sneddon",
+             "LCARS Watchface", "Tim Sneddon",
              1, 0, /* App version */
              DEFAULT_MENU_ICON,
              APP_INFO_STANDARD_APP);

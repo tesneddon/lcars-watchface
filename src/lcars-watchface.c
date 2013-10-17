@@ -75,12 +75,14 @@ PBL_APP_INFO(MY_UUID,
              "LCARS Watchface", "Tim Sneddon",
              1, 0, /* App version */
              DEFAULT_MENU_ICON,
-             APP_INFO_STANDARD_APP);
+             APP_INFO_WATCH_FACE);
 
 /*
 ** Global storage.
 */
 
+    HeapBitmap lcars;
+    BitmapLayer lcars_layer;
     Window window;
 
 void pbl_main(void *params) {
@@ -92,8 +94,17 @@ void pbl_main(void *params) {
 
 
 void handle_init(AppContextRef ctx) {
-    window_init(&window, "Window Name");
+
+    window_init(&window, "LCARS Watchface");
     window_stack_push(&window, true /* Animated */);
+    window_set_background_color(&window, GColorBlack);
+
+    resource_init_current_app(&APP_RESOURCES);
+
+    heap_bitmap_init(&lcars, RESOURCE_ID_LCARS);
+    bitmap_layer_init(&lcars_layer, GRect(0, 0, 144, 168));
+    bitmap_layer_set_bitmap(&lcars_layer, &lcars.bmp);
+    layer_add_child(&window.layer, &lcars_layer.layer);
 }
 
 

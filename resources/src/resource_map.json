@@ -1,6 +1,6 @@
 {
     "friendlyVersion": "VERSION",
-    "versionDefName": "VERSION",
+    "versionDefName": "APP_RESOURCES",
     "media": [
     	{
 	    "type":"png",
